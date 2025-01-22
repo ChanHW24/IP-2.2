@@ -8,6 +8,9 @@ TagManager:
   - map2
   - map3
   - map4
+  - Anchor
+  - ExitTrigger
+  - StartTrigger
   layers:
   - Default
   - TransparentFX
