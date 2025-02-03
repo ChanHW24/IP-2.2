@@ -1,38 +1,80 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public UIManager uIManager;
 
-    public int score = 0; // Player's score
+    public TextMeshProUGUI timerText; // Reference to TextMeshProUGUI for the timer
+    public float timer = 0f;         // Timer value
+    private bool isTiming = false;    // Flag to check if the timer is running
 
 
     void Start()
     {
-        UpdateScoreUI();
+        
     }
 
-    public void AddScore(int points)
+    private void Update()
     {
-        score += points; // Add points to the score
-        UpdateScoreUI();
-    }
-
-    private void UpdateScoreUI()
-    {
-        if (uIManager.scoreText != null)
+        if (isTiming)
         {
-            uIManager.scoreText.text = "Score: " + score;
+            timer += Time.deltaTime;
+            UpdateTimerUI();
         }
     }
 
-    // Function to reset the score
-    public void ResetScore()
+    public void StartTimer()
     {
-        score = 0; // Reset score to 0
-        UpdateScoreUI(); // Update the UI to reflect the reset
+        if (!isTiming)
+        {
+            isTiming = true;
+            timer = 0f; // Reset timer when starting
+            Debug.Log("Timer started!");
+        }
+        else
+        {
+            Debug.LogWarning("Timer is already running.");
+        }
+    }
+
+    public void StopTimer()
+    {
+        if (isTiming)
+        {
+            isTiming = false;
+            Debug.Log($"Timer stopped! Final time: {timer:0.00} s");
+            DisplayFinalTime();
+        }
+        else
+        {
+            Debug.LogWarning("Timer is not running!");
+        }
+    }
+
+    private void UpdateTimerUI()
+    {
+        timerText.text = $"Time: {timer:0.00} s";
+    }
+
+    private void DisplayFinalTime()
+    {
+        timerText.text = $"Final Time: {timer:0.00} s";
+    }
+
+    // Send Timer value to Firebase to check if highscore needs to be updated.
+    public void CheckAndUpdateTiming(float newTiming)
+    {
+        if (FirebaseManager.Instance != null)
+        {
+            FirebaseManager.Instance.UpdateTiming(newTiming);
+        }
+        else
+        {
+            Debug.LogError("FirebaseManager instance is null. Ensure it is initialized.");
+        }
     }
 
 }

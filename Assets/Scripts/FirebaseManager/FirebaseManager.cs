@@ -76,12 +76,11 @@ public class FirebaseManager : MonoBehaviour
         databaseRef = FirebaseDatabase.DefaultInstance.RootReference;
         DatabaseReference = databaseRef;
 
-        //GetTop10HighScores(); // Display leaderboard
     }
 
     private void Update()
     {
-        //GetTop10HighScores(); // Display leaderboard
+
     }
 
     // Called when SignUp button is clicked
@@ -124,7 +123,7 @@ public class FirebaseManager : MonoBehaviour
                 Debug.LogFormat("Welcome! {0}, your UID is {1}", newPlayer.User.Email, newPlayer.User.UserId);
 
                 // Save the username and initial score to the database
-                SaveUsernameAndScoreToDatabase(UserId, username, email, 0);
+                SaveToDatabase(UserId, username, email, 0);
 
                 // Update UI
                 uIManager.usernameText.text = "User: " + username;
@@ -134,7 +133,7 @@ public class FirebaseManager : MonoBehaviour
     }
 
     // Saves the username and initial score to the Firebase database
-    private void SaveUsernameAndScoreToDatabase(string userId, string username, string email, float initialTime)
+    private void SaveToDatabase(string userId, string username, string email, float initialTime)
     {
         // Save the username
         databaseRef.Child("users").Child(userId).Child("username").SetValueAsync(username).ContinueWithOnMainThread(task =>
@@ -163,7 +162,7 @@ public class FirebaseManager : MonoBehaviour
         });
 
         // Save the initial score
-        databaseRef.Child("users").Child(userId).Child("Timing").SetValueAsync(initialTime).ContinueWithOnMainThread(task =>
+        databaseRef.Child("users").Child(userId).Child("timing").SetValueAsync(initialTime).ContinueWithOnMainThread(task =>
         {
             if (task.IsCompleted)
             {
@@ -172,6 +171,20 @@ public class FirebaseManager : MonoBehaviour
             else
             {
                 Debug.LogError("Failed to save score: " + task.Exception);
+            }
+        });
+
+        // Create an empty inventory
+        List<string> emptyInventory = new List<string>();
+        databaseRef.Child("users").Child(userId).Child("inventory").SetValueAsync(emptyInventory).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted)
+            {
+                Debug.Log("Empty inventory created!");
+            }
+            else
+            {
+                Debug.LogError("Failed to create inventory: " + task.Exception);
             }
         });
     }
@@ -213,7 +226,7 @@ public class FirebaseManager : MonoBehaviour
             {
                 DataSnapshot snapshot = task.Result;
                 Username = snapshot.Child("username").Value.ToString();
-                float highscore = float.Parse(snapshot.Child("points").Value.ToString());
+                float highscore = float.Parse(snapshot.Child("timing").Value.ToString());
 
                 Debug.Log("Username loaded: " + Username + " High Score: " + highscore);
 
@@ -228,7 +241,7 @@ public class FirebaseManager : MonoBehaviour
         });
     }
 
-    /*
+    
     // Sends a password reset email to the user
     public void SendPasswordResetEmail()
     {
@@ -257,46 +270,74 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
-    // Sends high score to Firebase
-    public void UpdateHighScoreInFirebase(string userId, System.Action onComplete)
+    // Function to update the timing value in Firebase
+    public void UpdateTiming(float newTiming)
     {
-        // Get the current high score from the database
-        var userRef = DatabaseReference.Child("users").Child(userId);
-
-        userRef.Child("points").GetValueAsync().ContinueWithOnMainThread(task =>
+        if (string.IsNullOrEmpty(UserId))
         {
-            if (task.IsCompleted && task.Result.Exists)
-            {
-                float existingHighScore = float.Parse(task.Result.Value.ToString());
+            Debug.LogError("UserId is null or empty. Please log in before updating timing.");
+            return;
+        }
 
-                if (gameManager.score > existingHighScore)
+        // Retrieve the current timing from Firebase
+        databaseRef.Child("users").Child(UserId).Child("timing").GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.LogError("Failed to retrieve timing: " + task.Exception);
+            }
+            else if (task.IsCompleted)
+            {
+                if (task.Result.Exists)
                 {
-                    // Update high score if the current score is higher
-                    userRef.Child("points").SetValueAsync(gameManager.score).ContinueWithOnMainThread(updateTask =>
+                    float currentTiming = float.Parse(task.Result.Value.ToString());
+
+                    Debug.Log($"Current timing: {currentTiming}, New timing: {newTiming}");
+
+                    // Check if the new timing is faster then the timing in Firebase.
+                    if (newTiming < currentTiming)
                     {
-                        if (updateTask.IsCompleted)
+                        // Update Firebase with the new faster timing
+                        databaseRef.Child("users").Child(UserId).Child("timing").SetValueAsync(newTiming).ContinueWithOnMainThread(updateTask =>
                         {
-                            Debug.Log("High score updated successfully!");
-                            uIManager.hiscoreText.text = "High Score: " + Mathf.FloorToInt(gameManager.score);
-                        }
-                        else
-                        {
-                            Debug.Log("Failed to update high score: " + updateTask.Exception);
-                        }
-                        onComplete?.Invoke(); // Trigger callback
-                    });
+                            if (updateTask.IsCompleted)
+                            {
+                                Debug.Log($"Timing updated to {newTiming} as it is faster than the previous timing.");
+                            }
+                            else
+                            {
+                                Debug.LogError("Failed to update timing: " + updateTask.Exception);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        Debug.Log("New timing is not faster. No update performed.");
+                    }
                 }
                 else
                 {
-                    onComplete?.Invoke(); // Trigger callback if no update needed
+                    Debug.Log("No timing exists in Firebase. Setting new timing.");
+                    // If no timing exists, set the new timing
+                    databaseRef.Child("users").Child(UserId).Child("timing").SetValueAsync(newTiming).ContinueWithOnMainThread(updateTask =>
+                    {
+                        if (updateTask.IsCompleted)
+                        {
+                            Debug.Log($"Timing initialized to {newTiming}.");
+                        }
+                        else
+                        {
+                            Debug.LogError("Failed to initialize timing: " + updateTask.Exception);
+                        }
+                    });
                 }
-            }
-            else
-            {
-                onComplete?.Invoke(); // Trigger callback if task failed or no data exists
             }
         });
     }
+
+
+
+    /*
 
     // Retrieves the top 10 high scores from the database
     public void GetTop10HighScores()

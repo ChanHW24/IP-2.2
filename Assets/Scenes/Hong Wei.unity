@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2260fa46deb9be04fb70a31a3614f89c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerScript: {fileID: 1173564517}
+  gameManager: {fileID: 1173564519}
 --- !u!114 &198131367 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1717611425345653481, guid: bc02934b5e49b47428409f9c3f275233, type: 3}
@@ -257,11 +257,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &219043017 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1575958692806275066, guid: 1fceb5a79dbb138488d947719cb5717a, type: 3}
+  m_PrefabInstance: {fileID: 6645293206582113099}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &242872917 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6660031091381963466, guid: 1fceb5a79dbb138488d947719cb5717a, type: 3}
   m_PrefabInstance: {fileID: 6645293206582113099}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &259974432 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7510603088615113320, guid: 1fceb5a79dbb138488d947719cb5717a, type: 3}
+  m_PrefabInstance: {fileID: 6645293206582113099}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &283612246 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3857538012465548084, guid: 1fceb5a79dbb138488d947719cb5717a, type: 3}
+  m_PrefabInstance: {fileID: 6645293206582113099}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &299639867
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,18 +425,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bb7ddf552030b64e8a96e95c65e5663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreText: {fileID: 0}
-  hiscoreText: {fileID: 0}
+  scoreText: {fileID: 259974432}
+  hiscoreText: {fileID: 1622172473}
   gameOverText: {fileID: 0}
   retryButton: {fileID: 0}
   gameMenuUI: {fileID: 1101958744}
   loginMenuUI: {fileID: 1101958743}
   signUpMenuUI: {fileID: 1101958742}
-  usernameText: {fileID: 0}
+  usernameText: {fileID: 219043017}
   forgotPasswordButton: {fileID: 1101958741}
   resetEmailField: {fileID: 1101958740}
   resetPasswordBtn: {fileID: 1101958739}
-  messageText: {fileID: 1101958738}
+  messageText: {fileID: 283612246}
   backButton: {fileID: 1101958737}
   menuButton: {fileID: 1101958736}
   leaderboardText: {fileID: 1101958735}
@@ -612,7 +645,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d69b73528a1cf704ba17ae998bb7b02f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerScript: {fileID: 1173564517}
+  gameManager: {fileID: 1173564519}
+  firebaseManager: {fileID: 745159450}
 --- !u!1 &745159449
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,9 +770,41 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2051356981017349582, guid: bc02934b5e49b47428409f9c3f275233, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3910270101596235497, guid: bc02934b5e49b47428409f9c3f275233, type: 3}
       propertyPath: m_Name
       value: UI Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3974761543746920752, guid: bc02934b5e49b47428409f9c3f275233, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 745159450}
+    - target: {fileID: 3974761543746920752, guid: bc02934b5e49b47428409f9c3f275233, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Login
+      objectReference: {fileID: 0}
+    - target: {fileID: 4348314238351790286, guid: bc02934b5e49b47428409f9c3f275233, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4627938964787679528, guid: bc02934b5e49b47428409f9c3f275233, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5145458236516707876, guid: bc02934b5e49b47428409f9c3f275233, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6376539892944166768, guid: bc02934b5e49b47428409f9c3f275233, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 745159450}
+    - target: {fileID: 6376539892944166768, guid: bc02934b5e49b47428409f9c3f275233, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SendPasswordResetEmail
       objectReference: {fileID: 0}
     - target: {fileID: 6844577445785093651, guid: bc02934b5e49b47428409f9c3f275233, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -872,17 +938,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3450443701546064968, guid: bc02934b5e49b47428409f9c3f275233, type: 3}
   m_PrefabInstance: {fileID: 1101958733}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1101958738 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 654076285671203540, guid: bc02934b5e49b47428409f9c3f275233, type: 3}
-  m_PrefabInstance: {fileID: 1101958733}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1101958739 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1745885150459846399, guid: bc02934b5e49b47428409f9c3f275233, type: 3}
@@ -928,8 +983,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1173564518}
-  - component: {fileID: 1173564517}
   - component: {fileID: 1173564519}
+  - component: {fileID: 1173564520}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -937,19 +992,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1173564517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1173564516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8d9dd98ca7b7bb49bf917126176e218, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timerText: {fileID: 1723472099}
 --- !u!4 &1173564518
 Transform:
   m_ObjectHideFlags: 0
@@ -978,7 +1020,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uIManager: {fileID: 310067381}
-  score: 0
+  timerText: {fileID: 1723472099}
+  timer: 0
+--- !u!114 &1173564520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173564516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d9dd98ca7b7bb49bf917126176e218, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timerText: {fileID: 0}
+  timer: 0
+  isTiming: 0
 --- !u!114 &1181985864 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2351531763063095441, guid: bc02934b5e49b47428409f9c3f275233, type: 3}
@@ -1178,6 +1236,17 @@ MonoBehaviour:
   m_Teleporting:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1622172473 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7867237483553303740, guid: 1fceb5a79dbb138488d947719cb5717a, type: 3}
+  m_PrefabInstance: {fileID: 6645293206582113099}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1658613832 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
@@ -1558,12 +1627,12 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 299639869}
+  - {fileID: 1101958733}
+  - {fileID: 745159451}
+  - {fileID: 1173564518}
   - {fileID: 441087506}
   - {fileID: 756192408}
   - {fileID: 2092139010}
   - {fileID: 1249617921}
   - {fileID: 452513977}
   - {fileID: 178083576}
-  - {fileID: 1101958733}
-  - {fileID: 745159451}
-  - {fileID: 1173564518}
