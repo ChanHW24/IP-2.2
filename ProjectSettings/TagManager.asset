@@ -4,15 +4,16 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Ticket
+  - Collectible
   - map1
   - map2
-  - map3
-  - map4
+  - Map
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Collectible
   - Water
   - UI
   - 
