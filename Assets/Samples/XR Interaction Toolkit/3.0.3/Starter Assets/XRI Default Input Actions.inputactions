@@ -1655,6 +1655,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Cam",
+                    "type": "Button",
+                    "id": "5daf3f3e-ec86-4b04-9453-5d51f74d372c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1842,6 +1851,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Collect Item",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8fb55336-de55-47fa-85e4-ab0f475fd451",
+                    "path": "<XRController>{RightHand}/{SecondaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cam",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
