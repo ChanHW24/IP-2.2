@@ -12,10 +12,10 @@ public class GameManager : MonoBehaviour
     public float timer = 0f;         // Timer value
     private bool isTiming = false;    // Flag to check if the timer is running
 
-
     void Start()
     {
-        
+        // Initialize the timer text to show "Time: --" or an empty string
+        timerText.text = "Time: --";
     }
 
     private void Update()
@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
             isTiming = false;
             Debug.Log($"Timer stopped! Final time: {timer:0.00} s");
             DisplayFinalTime();
+            CheckAndUpdateTiming(timer); // Send the final time to Firebase
         }
         else
         {
@@ -57,11 +58,13 @@ public class GameManager : MonoBehaviour
 
     private void UpdateTimerUI()
     {
+        // Update the timer text with the current time
         timerText.text = $"Time: {timer:0.00} s";
     }
 
     private void DisplayFinalTime()
     {
+        // Display the final time in the UI
         timerText.text = $"Final Time: {timer:0.00} s";
     }
 
@@ -77,8 +80,6 @@ public class GameManager : MonoBehaviour
             Debug.LogError("FirebaseManager instance is null. Ensure it is initialized.");
         }
     }
-
-
 
     public void AddItem(string itemName)
     {
@@ -98,4 +99,3 @@ public class GameManager : MonoBehaviour
         }
     }
 }
-
