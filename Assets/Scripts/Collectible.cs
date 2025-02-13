@@ -7,7 +7,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class Collectible : MonoBehaviour
 {
     public string itemName; // Name of the item
-    private CollectibleManager collectibleManager;
+    /*private CollectibleManager collectibleManager;
     
     [Header("Input Action")]
     public InputActionReference collectAction; // Assign the "PrimaryButton" action in Inspector
@@ -39,5 +39,5 @@ public class Collectible : MonoBehaviour
         {
             collectAction.action.performed -= CollectItem; // Unsubscribe when destroyed
         }
-    }
+    }*/
 }

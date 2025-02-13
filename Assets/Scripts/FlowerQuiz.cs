@@ -96,7 +96,7 @@ public class FlowerQuiz : MonoBehaviour
 
         // Reset flowers to their original positions
         ResetFlowers();
-        instructionsText.gameObject.SetActive(false);
+        instructionsText.gameObject.SetActive(true);
         correctText.gameObject.SetActive(false);
         incorrectText.gameObject.SetActive(false);
     }

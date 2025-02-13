@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class CollectiableManager : MonoBehaviour
+public class CollectibleManager : MonoBehaviour
 {
     // A list to store data of collected items
     public List<string> collectedItems = new List<string>();
