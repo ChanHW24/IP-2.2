@@ -20,6 +20,10 @@ public class Map : MonoBehaviour
     public GameObject collectedMapPrefab; // Assign the map prefab to spawn on the left hand
     public Transform leftControllerAttachPoint; // Attach point on left controller
 
+    [Header("Teleportation")]
+    public Transform[] teleportPoints; // Assign 4 teleport points in Inspector
+    public GameObject playerRig; // Assign XR Rig or Player GameObject
+    
     private bool[] mapPiecesPlaced; // Track whether each map piece is placed
     private bool hasCollectedMap = false;
     private GameObject instantiatedMap = null; // Store the completed map instance
@@ -133,5 +137,19 @@ public class Map : MonoBehaviour
         }
 
         Debug.Log("Map pieces and sockets have been despawned.");
+    }
+    
+    public void TeleportTo(int index)
+    {
+        if (index >= 0 && index < teleportPoints.Length && playerRig != null)
+        {
+            playerRig.transform.position = teleportPoints[index].position;
+            playerRig.transform.rotation = teleportPoints[index].rotation;
+            Debug.Log($"Teleported to point {index + 1}");
+        }
+        else
+        {
+            Debug.LogError("Invalid teleport index or missing playerRig!");
+        }
     }
 }
