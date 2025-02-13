@@ -17,6 +17,7 @@ using System.Linq;
 using System;
 using UnityEngine.SocialPlatforms.Impl;
 using System.Transactions;
+using Unity.VisualScripting;
 
 public class FirebaseManager : MonoBehaviour
 {
@@ -75,7 +76,6 @@ public class FirebaseManager : MonoBehaviour
         auth = FirebaseAuth.DefaultInstance;
         databaseRef = FirebaseDatabase.DefaultInstance.RootReference;
         DatabaseReference = databaseRef;
-
     }
 
     private void Update()
@@ -161,7 +161,7 @@ public class FirebaseManager : MonoBehaviour
             }
         });
 
-        // Save the initial score
+        // Save the initial timing
         databaseRef.Child("users").Child(userId).Child("timing").SetValueAsync(initialTime).ContinueWithOnMainThread(task =>
         {
             if (task.IsCompleted)
@@ -170,21 +170,29 @@ public class FirebaseManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Failed to save score: " + task.Exception);
+                Debug.LogError("Failed to save timing: " + task.Exception);
             }
         });
 
-        // Create an empty inventory
-        List<string> emptyInventory = new List<string>();
-        databaseRef.Child("users").Child(userId).Child("inventory").SetValueAsync(emptyInventory).ContinueWithOnMainThread(task =>
+        // Create the inventory structure
+        Dictionary<string, object> inventory = new Dictionary<string, object>
+    {
+        { "chineseLantern", new Dictionary<string, object> { { "collected", false } } },
+        { "orchidFlower", new Dictionary<string, object> { { "collected", false } } },
+        { "singaporeCoin", new Dictionary<string, object> { { "collected", false } } },
+        { "singaporePainting", new Dictionary<string, object> { { "collected", false } } }
+    };
+
+        // Save the inventory
+        databaseRef.Child("users").Child(userId).Child("inventory").SetValueAsync(inventory).ContinueWithOnMainThread(task =>
         {
             if (task.IsCompleted)
             {
-                Debug.Log("Empty inventory created!");
+                Debug.Log("Inventory saved!");
             }
             else
             {
-                Debug.LogError("Failed to create inventory: " + task.Exception);
+                Debug.LogError("Failed to save inventory: " + task.Exception);
             }
         });
     }
@@ -279,6 +287,9 @@ public class FirebaseManager : MonoBehaviour
             return;
         }
 
+        // Format the new timing to 3 decimal places
+        float formattedTiming = Mathf.Round(newTiming * 1000) / 1000; // Round to 3 decimal places
+
         // Retrieve the current timing from Firebase
         databaseRef.Child("users").Child(UserId).Child("timing").GetValueAsync().ContinueWithOnMainThread(task =>
         {
@@ -288,54 +299,61 @@ public class FirebaseManager : MonoBehaviour
             }
             else if (task.IsCompleted)
             {
+                float currentTiming = 0f; // Default value if no timing exists
+
                 if (task.Result.Exists)
                 {
-                    float currentTiming = float.Parse(task.Result.Value.ToString());
-
-                    Debug.Log($"Current timing: {currentTiming}, New timing: {newTiming}");
-
-                    // Check if the new timing is faster then the timing in Firebase.
-                    if (newTiming < currentTiming)
-                    {
-                        // Update Firebase with the new faster timing
-                        databaseRef.Child("users").Child(UserId).Child("timing").SetValueAsync(newTiming).ContinueWithOnMainThread(updateTask =>
-                        {
-                            if (updateTask.IsCompleted)
-                            {
-                                Debug.Log($"Timing updated to {newTiming} as it is faster than the previous timing.");
-                            }
-                            else
-                            {
-                                Debug.LogError("Failed to update timing: " + updateTask.Exception);
-                            }
-                        });
-                    }
-                    else
-                    {
-                        Debug.Log("New timing is not faster. No update performed.");
-                    }
+                    // Parse the current timing from Firebase
+                    currentTiming = float.Parse(task.Result.Value.ToString());
                 }
-                else
+
+                Debug.Log($"Current timing: {currentTiming:F3}, New timing: {formattedTiming:F3}");
+
+                // Check if the current timing is 0 (no valid timing set) or if the new timing is faster
+                if (currentTiming == 0 || formattedTiming < currentTiming)
                 {
-                    Debug.Log("No timing exists in Firebase. Setting new timing.");
-                    // If no timing exists, set the new timing
-                    databaseRef.Child("users").Child(UserId).Child("timing").SetValueAsync(newTiming).ContinueWithOnMainThread(updateTask =>
+                    // Update Firebase with the new timing (formatted to 3 decimal places)
+                    databaseRef.Child("users").Child(UserId).Child("timing").SetValueAsync(formattedTiming).ContinueWithOnMainThread(updateTask =>
                     {
                         if (updateTask.IsCompleted)
                         {
-                            Debug.Log($"Timing initialized to {newTiming}.");
+                            Debug.Log($"Timing updated to {formattedTiming:F3}.");
                         }
                         else
                         {
-                            Debug.LogError("Failed to initialize timing: " + updateTask.Exception);
+                            Debug.LogError("Failed to update timing: " + updateTask.Exception);
                         }
                     });
+                }
+                else
+                {
+                    Debug.Log("New timing is not faster. No update performed.");
                 }
             }
         });
     }
 
+    public void UpdateInventory(string itemName)
+    {
+        if (databaseRef == null)
+        {
+            Debug.LogError("Database reference is not initialized.");
+            return;
+        }
 
+        // Update the specific item in the user's inventory
+        databaseRef.Child("users").Child(UserId).Child("inventory").Child(itemName).Child("collected").SetValueAsync(true).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.LogError("Failed to update Firebase: " + task.Exception);
+            }
+            else if (task.IsCompleted)
+            {
+                Debug.Log($"Firebase updated: {itemName} collected.");
+            }
+        });
+    }
 
     /*
 

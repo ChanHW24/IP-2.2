@@ -37,6 +37,16 @@ public class ObjectCollector : MonoBehaviour
                     gameManager.AddItem(collectible.itemName);
                 }
 
+                // Update Firebase via FirebaseManager
+                if (FirebaseManager.Instance != null)
+                {
+                    FirebaseManager.Instance.UpdateInventory(collectible.itemName);
+                }
+                else
+                {
+                    Debug.LogError("FirebaseManager instance is not available.");
+                }
+
                 // Destroy the collected object
                 Destroy(collectible.gameObject);
                 Debug.Log($"Collected: {collectible.itemName}");
