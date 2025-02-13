@@ -880,6 +880,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: chineseLantern
+  collectAction: {fileID: -5026406635193666563, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!54 &663743637
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1331,7 +1332,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1173564518}
   - component: {fileID: 1173564519}
-  - component: {fileID: 1173564520}
+  - component: {fileID: 1173564521}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -1370,7 +1371,7 @@ MonoBehaviour:
   collectedItems: []
   timerText: {fileID: 1723472099}
   timer: 0
---- !u!114 &1173564520
+--- !u!114 &1173564521
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1379,9 +1380,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1173564516}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8d9dd98ca7b7bb49bf917126176e218, type: 3}
+  m_Script: {fileID: 11500000, guid: 33d793315653cb14a8e14d859ec4d90c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collectedItems: []
 --- !u!114 &1181985864 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2351531763063095441, guid: bc02934b5e49b47428409f9c3f275233, type: 3}
@@ -1589,6 +1591,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: orchidFlower
+  collectAction: {fileID: -5026406635193666563, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!54 &1186087455
 Rigidbody:
   m_ObjectHideFlags: 0

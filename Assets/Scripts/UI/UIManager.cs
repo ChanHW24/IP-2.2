@@ -15,8 +15,6 @@ public class UIManager : MonoBehaviour
 {
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI hiscoreText;
-    public TextMeshProUGUI gameOverText;
-    public GameObject retryButton;
     public GameObject gameMenuUI;
     public GameObject loginMenuUI;
     public GameObject signUpMenuUI;

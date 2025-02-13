@@ -18,6 +18,7 @@ using System;
 using UnityEngine.SocialPlatforms.Impl;
 using System.Transactions;
 using Unity.VisualScripting;
+using System.Text;
 
 public class FirebaseManager : MonoBehaviour
 {
@@ -76,11 +77,13 @@ public class FirebaseManager : MonoBehaviour
         auth = FirebaseAuth.DefaultInstance;
         databaseRef = FirebaseDatabase.DefaultInstance.RootReference;
         DatabaseReference = databaseRef;
+
+        GetTop10LowestTimings(); // Display leaderboard
     }
 
     private void Update()
     {
-
+        GetTop10LowestTimings(); // Update leaderboard
     }
 
     // Called when SignUp button is clicked
@@ -355,43 +358,52 @@ public class FirebaseManager : MonoBehaviour
         });
     }
 
-    /*
 
-    // Retrieves the top 10 high scores from the database
-    public void GetTop10HighScores()
+    // Retrieves the top 10 players with the lowest timings (excluding 0)
+    public void GetTop10LowestTimings()
     {
         databaseRef.Child("users").GetValueAsync().ContinueWithOnMainThread(task =>
         {
-            if (task.IsCompleted)
+            if (task.IsFaulted)
             {
-                DataSnapshot snapshot = task.Result;
-                List<PlayerScore> playerScores = new List<PlayerScore>();
+                Debug.LogError("Error retrieving timings: " + task.Exception);
+                return;
+            }
 
-                foreach (var userSnapshot in snapshot.Children)
+            DataSnapshot snapshot = task.Result;
+            List<PlayerTiming> playerTimings = new List<PlayerTiming>();
+
+            foreach (var userSnapshot in snapshot.Children)
+            {
+                string userID = userSnapshot.Key; // Get the userID
+                string username = userSnapshot.Child("username").Value?.ToString(); // Get username
+                string timingValue = userSnapshot.Child("timing").Value?.ToString(); // Get timing as string
+
+                if (string.IsNullOrEmpty(username)) continue; // Skip if username is null or empty
+
+                if (float.TryParse(timingValue, out float timing))
                 {
-                    string userID = userSnapshot.Key; // Get the userID
-                    string username = userSnapshot.Child("username").Value.ToString(); // Get username
-                    int score = Mathf.RoundToInt(Convert.ToSingle(userSnapshot.Child("points").Value)); // Get score
+                    // Skip if timing is 0
+                    if (timing == 0) continue;
 
-
-                    playerScores.Add(new PlayerScore(username, score));
+                    playerTimings.Add(new PlayerTiming(username, timing));
                 }
-
-                // Sort the list in descending order based on high score
-                var top10Players = playerScores.OrderByDescending(player => player.highscore).Take(10).ToList();
-
-                // Display the top 10 players
-                DisplayTop10Scores(top10Players);
+                else
+                {
+                    Debug.LogWarning($"Invalid timing for user {username}");
+                }
             }
-            else
-            {
-                Debug.LogError("Error retrieving high scores: " + task.Exception);
-            }
+
+            // Sort the list in ascending order based on timing (lowest timing first)
+            var top10Players = playerTimings.OrderBy(player => player.timing).Take(10).ToList();
+
+            // Display the top 10 players with the lowest timings
+            DisplayTop10Timings(top10Players);
         });
     }
 
-    // Displays the top 10 high scores in the UI
-    public void DisplayTop10Scores(List<PlayerScore> top10Players)
+    // Displays the top 10 players with the lowest timings
+    public void DisplayTop10Timings(List<PlayerTiming> top10Players)
     {
         if (top10Players == null || top10Players.Count == 0)
         {
@@ -399,20 +411,19 @@ public class FirebaseManager : MonoBehaviour
             return;
         }
 
-        string displayText = "Top 10 Players:\n";
+        StringBuilder displayText = new StringBuilder("Top 10 Players:\n");
         for (int i = 0; i < top10Players.Count; i++)
         {
-            displayText += (i + 1) + ". " + top10Players[i].username + ": " + top10Players[i].highscore.ToString("F2") + "\n";
+            displayText.AppendLine($"{i + 1}. {top10Players[i].username}: {top10Players[i].timing:F2}");
         }
 
-        uIManager.leaderboardText.text = displayText;
+        uIManager.leaderboardText.text = displayText.ToString();
     }
 
     // Triggered when the leaderboard button is clicked
     public void LeaderboardButton()
     {
-        GetTop10HighScores();
+        GetTop10LowestTimings();
     }
-    */
 }
 
