@@ -31,7 +31,7 @@ public class ObjectCollector : MonoBehaviour
             if (collectible != null)
             {
                 // Find the GameManager and add the item name
-                GameManager gameManager = FindObjectOfType<GameManager>();
+                CollectibleManager gameManager = FindObjectOfType<CollectibleManager>();
                 if (gameManager != null)
                 {
                     gameManager.AddItem(collectible.itemName);

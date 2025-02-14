@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using UnityEngine.XR.Interaction.Toolkit;
+
 
 public class Map : MonoBehaviour
 {
@@ -45,19 +45,40 @@ public class Map : MonoBehaviour
     {
         mapPiecesPlaced = new bool[sockets.Length];
 
-        // Subscribe to each socket's select event
         for (int i = 0; i < sockets.Length; i++)
         {
-            int index = i; // Avoid closure issue in the loop
-            sockets[i].selectEntered.AddListener((arg) => OnMapPiecePlaced(index));
+            int index = i; // Avoid closure issue
+            sockets[i].selectEntered.AddListener((arg) => OnMapPiecePlaced(index, arg.interactableObject));
+        }
+        
+        if (teleportPoints == null || teleportPoints.Length == 0)
+        {
+            Debug.LogError("Teleport points not assigned in Inspector!");
+        }
+
+        if (playerRig == null)
+        {
+            Debug.LogError("PlayerRig is missing! Assign XR Origin in Inspector.");
+        }
+        else
+        {
+            Debug.Log("PlayerRig is assigned.");
         }
     }
 
-    void OnMapPiecePlaced(int index)
+    void OnMapPiecePlaced(int index, UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable interactable)
     {
-        mapPiecesPlaced[index] = true;
+        if (interactable != null && interactable.transform.gameObject == mapPieces[index])
+        {
+            mapPiecesPlaced[index] = true;
+            Debug.Log($"Correct piece placed in socket {index + 1}");
+        }
+        else
+        {
+            Debug.Log($"Incorrect piece placed in socket {index + 1}, resetting.");
+            sockets[index].interactionManager.SelectExit(sockets[index], interactable); // Force ejection
+        }
 
-        // Check if all map pieces are placed
         if (AllMapPiecesPlaced())
         {
             SpawnNewMap();
@@ -78,7 +99,7 @@ public class Map : MonoBehaviour
     {
         instantiatedMap = Instantiate(newMapPrefab, spawnPoint.position, spawnPoint.rotation);
     }
-
+    
     void CollectMap(InputAction.CallbackContext context)
     {
         if (!hasCollectedMap && instantiatedMap != null)
@@ -88,21 +109,19 @@ public class Map : MonoBehaviour
             Debug.Log("Map Collected!");
         }
     }
-
+    
     void DisplayMap(InputAction.CallbackContext context)
     {
         if (hasCollectedMap)
         {
             if (spawnedMap == null)
             {
-                // Spawn map onto left controller
                 spawnedMap = Instantiate(collectedMapPrefab, leftControllerAttachPoint.position, leftControllerAttachPoint.rotation);
                 spawnedMap.transform.SetParent(leftControllerAttachPoint);
                 Debug.Log("Map displayed on left hand.");
             }
             else
             {
-                // Hide map if it's already displayed
                 Destroy(spawnedMap);
                 spawnedMap = null;
                 Debug.Log("Map removed from left hand.");
@@ -113,11 +132,9 @@ public class Map : MonoBehaviour
             Debug.Log("Player hasn't collected the map yet.");
         }
     }
-    
 
     void RemoveOldPieces()
     {
-        // Destroy the map pieces
         foreach (GameObject piece in mapPieces)
         {
             if (piece != null)
@@ -126,13 +143,12 @@ public class Map : MonoBehaviour
             }
         }
 
-        // Destroy the sockets
         foreach (var socket in sockets)
         {
             if (socket != null)
             {
-                socket.selectEntered.RemoveAllListeners(); // Clean up listeners
-                Destroy(socket.gameObject); // Destroy the GameObject containing the socket
+                socket.selectEntered.RemoveAllListeners();
+                Destroy(socket.gameObject);
             }
         }
 

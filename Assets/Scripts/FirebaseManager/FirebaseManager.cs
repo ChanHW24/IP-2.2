@@ -41,6 +41,10 @@ public class FirebaseManager : MonoBehaviour
     // UI buttons
     public GameObject signUpBtn;
     public GameObject loginBtn;
+    
+    //ticket
+    public GameObject ticketPrefab;
+    public Transform ticketSpawnPoint;
 
     // Store user ID and Username for future use
     public static string UserId { get; private set; }
@@ -224,6 +228,7 @@ public class FirebaseManager : MonoBehaviour
                 uIManager.backButton.gameObject.SetActive(false);
 
                 uIManager.ShowMessage("Login successful!");
+                SpawnTicket();
             }
         });
     }
@@ -424,6 +429,11 @@ public class FirebaseManager : MonoBehaviour
     public void LeaderboardButton()
     {
         GetTop10LowestTimings();
+    }
+
+    public void SpawnTicket()
+    {
+        ticketPrefab = Instantiate(ticketPrefab, ticketSpawnPoint.position, ticketSpawnPoint.rotation);
     }
 }
 
