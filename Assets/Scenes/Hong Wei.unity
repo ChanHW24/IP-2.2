@@ -802,7 +802,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   userId: 
-  imageIndex: 3
+  imageIndex: 35
 --- !u!1 &663743633
 GameObject:
   m_ObjectHideFlags: 0
@@ -1247,7 +1247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   userId: 
-  imageIndex: 1
+  imageIndex: 5
 --- !u!64 &1045895596
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2451,7 +2451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   userId: 
-  imageIndex: 2
+  imageIndex: 10
 --- !u!114 &1950881149 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 242625068675110058, guid: bc02934b5e49b47428409f9c3f275233, type: 3}

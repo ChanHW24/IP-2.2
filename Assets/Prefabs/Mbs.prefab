@@ -325,7 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0779ba8d13f82c43935d0067e6888d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Mbs
+  itemName: singaporePainting
 --- !u!1001 &6425865204107807026
 PrefabInstance:
   m_ObjectHideFlags: 0

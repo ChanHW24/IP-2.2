@@ -69,7 +69,7 @@ public class Cam : MonoBehaviour
     private IEnumerator UploadFileToSupabase(string filePath, byte[] fileData)
     {
         string fileName = Path.GetFileName(filePath);
-        string uploadUrl = $"{supabaseUrl}/storage/v1/object/{bucketName}/photos/fake uid/{fileName}";
+        string uploadUrl = $"{supabaseUrl}/storage/v1/object/{bucketName}/photos/{FirebaseManager.UserId}/{fileName}";
 
         Debug.Log($"Uploading to URL: {uploadUrl}");
 

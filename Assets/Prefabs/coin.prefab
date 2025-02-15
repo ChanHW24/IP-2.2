@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0779ba8d13f82c43935d0067e6888d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Coin
+  itemName: singaporeCoin
 --- !u!114 &1543519172544461343
 MonoBehaviour:
   m_ObjectHideFlags: 0

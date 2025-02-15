@@ -6,13 +6,26 @@ public class GalleryDisplay : MonoBehaviour
     public string userId; // User ID from FirebaseManager
     public int imageIndex; // Unique index for each quad (set in the Inspector)
 
+    private bool hasTriggered = false; // To ensure the coroutine runs only once
+
     void Start()
     {
-        // Start loading the image for this quad
-        StartCoroutine(LoadImage());
+        // You can remove the StartCoroutine call from Start if you only want it to run on trigger
+        // StartCoroutine(LoadImage());
     }
 
-    private IEnumerator LoadImage()
+    private void OnTriggerEnter(Collider other)
+    {
+        // Check if the object entering the trigger is the player (or any specific object)
+        if (other.CompareTag("Player") && !hasTriggered)
+        {
+            // Start loading the image for this quad
+            StartCoroutine(LoadImage());
+            hasTriggered = true; // Ensure the coroutine doesn't run again
+        }
+    }
+
+    public IEnumerator LoadImage()
     {
         // Construct the image URL based on the user ID and image index
         string imageUrl = GetImageUrl(userId, imageIndex);
@@ -38,9 +51,9 @@ public class GalleryDisplay : MonoBehaviour
         }
     }
 
-    private string GetImageUrl(string userId, int imageIndex)
+    public string GetImageUrl(string userId, int imageIndex)
     {
         // Construct the URL for the image based on the user ID and image index
-        return $"https://uvklscosbezqzsowuxlb.supabase.co/storage/v1/object/public/images/photos/fake uid/{imageIndex}.jpg";
+        return $"https://uvklscosbezqzsowuxlb.supabase.co/storage/v1/object/public/images/photos/7Dm4DJ1JAUdIgO9oGFhmdfWWE4W2/{imageIndex}.jpg";
     }
 }

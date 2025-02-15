@@ -248,7 +248,7 @@ public class FirebaseManager : MonoBehaviour
 
                 // Update UI with username and high score
                 uIManager.usernameText.text = "User: " + Username;
-                uIManager.hiscoreText.text = "High Score: " + Mathf.FloorToInt(highscore);
+                uIManager.hiscoreText.text = "Fastest Time: " + Mathf.FloorToInt(highscore);
             }
             else
             {
