@@ -11,6 +11,13 @@ public class ObjectCollector : MonoBehaviour
     public Transform rightController; // Assign the right controller transform
     public float collectRange = 2f; // Maximum collection distance
     public LayerMask collectibleLayer; // Set this to the Collectible layer
+    
+    private GameManager gameManager;
+    
+    private void Start()
+    {
+        gameManager = FindObjectOfType<GameManager>();
+    }
 
     private void OnEnable()
     {
@@ -31,7 +38,7 @@ public class ObjectCollector : MonoBehaviour
             if (collectible != null)
             {
                 // Find the GameManager and add the item name
-                CollectibleManager gameManager = FindObjectOfType<CollectibleManager>();
+                GameManager gameManager = FindObjectOfType<GameManager>();
                 if (gameManager != null)
                 {
                     gameManager.AddItem(collectible.itemName);

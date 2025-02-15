@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour
 {
     public UIManager uIManager;
     public List<string> collectedItems = new List<string>();
+    
+    public SlidingDoor exitGantryDoor; // Reference to the exit gantry door script
+    private List<string> requiredItems = new List<string> { "singaporeCoin", "chineseLantern", "orchidFlower", "singaporePainting" };
 
     public TextMeshProUGUI timerText; // Reference to TextMeshProUGUI for the timer
     public float timer = 0f;         // Timer value
@@ -16,6 +19,11 @@ public class GameManager : MonoBehaviour
     {
         // Initialize the timer text to show "Time: --" or an empty string
         timerText.text = "Time: --";
+        
+        if (exitGantryDoor == null)
+        {
+            Debug.LogError("Exit gantry door reference is missing!");
+        }
     }
 
     private void Update()
@@ -87,15 +95,20 @@ public class GameManager : MonoBehaviour
         {
             collectedItems.Add(itemName);
             Debug.Log($"Item collected: {itemName}");
+            
+            CheckAllItemsCollected();
         }
     }
 
-    public void DisplayCollectedItems()
+
+    
+    private void CheckAllItemsCollected()
     {
-        Debug.Log("Collected Items:");
-        foreach (var item in collectedItems)
+        if (requiredItems.TrueForAll(item => collectedItems.Contains(item)))
         {
-            Debug.Log(item);
+            Debug.Log("All required items collected! Opening exit gantry...");
+            exitGantryDoor.OpenDoor(); // Open the exit gantry doors
         }
     }
+    
 }

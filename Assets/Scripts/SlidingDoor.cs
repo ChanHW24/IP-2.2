@@ -31,14 +31,17 @@ public class SlidingDoor : MonoBehaviour
        {
            if (isOpening)
            {
+               Debug.Log("Door's opening...");
                // Smoothly move doors to open positions
                doorLeft.position = Vector3.MoveTowards(doorLeft.position, leftDoorOpenPos, openSpeed * Time.deltaTime);
                doorRight.position = Vector3.MoveTowards(doorRight.position, rightDoorOpenPos, openSpeed * Time.deltaTime);
            }
        }
+    
    
        public void OpenDoor()
        {
            isOpening = true; // Start the door opening process
        }
+
 }
