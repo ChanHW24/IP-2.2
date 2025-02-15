@@ -608,8 +608,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 869c845a6559a3b46a3251c5a58cd3ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  supabaseUrl: https://kmxmtazgljdpwzhbtlfc.supabase.co
-  supabaseAnonKey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtteG10YXpnbGpkcHd6aGJ0bGZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYxNTM2MDgsImV4cCI6MjA1MTcyOTYwOH0.6iiMkUVPdxstmSVfArSUhxjkjt_MNby-aMlCM7NGHTg
+  supabaseUrl: https://uvklscosbezqzsowuxlb.supabase.co
+  supabaseAnonKey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2a2xzY29zYmV6cXpzb3d1eGxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYyMTMwMjIsImV4cCI6MjA1MTc4OTAyMn0.MtRESkZnIRtfJNGrVAuL3_jwOC_Fb4z3lLXznJFm5RE
   bucketName: images
   vrCamera: {fileID: 3224435708178746020}
   screenDisplay: {fileID: 1617491269667119152}

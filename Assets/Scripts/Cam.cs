@@ -4,13 +4,11 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System;
 using System.IO;
-using System.Threading.Tasks;
-
 
 public class Cam : MonoBehaviour
 {
-    public string supabaseUrl = "https://kmxmtazgljdpwzhbtlfc.supabase.co"; // Your Supabase URL
-    public string supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."; // Your Supabase Anon Key
+    public string supabaseUrl = "https://uvklscosbezqzsowuxlb.supabase.co"; // Your Supabase URL
+    public string supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2a2xzY29zYmV6cXpzb3d1eGxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYyMTMwMjIsImV4cCI6MjA1MTc4OTAyMn0.MtRESkZnIRtfJNGrVAuL3_jwOC_Fb4z3lLXznJFm5RE"; // Your Supabase Anon Key
     public string bucketName = "images"; // Your Supabase storage bucket name
 
     public Camera vrCamera; // Assign the VR Camera here
@@ -19,6 +17,7 @@ public class Cam : MonoBehaviour
 
     private RenderTexture renderTexture;
     private const string UploadFolder = "vr_screenshots"; // Folder in Supabase storage
+    private int photoCounter = 1; // Counter to track the number of photos taken
 
     private void Start()
     {
@@ -51,13 +50,17 @@ public class Cam : MonoBehaviour
         RenderTexture.active = null;
 
         // Convert to PNG
-        byte[] imageData = screenshot.EncodeToPNG();
+        byte[] imageData = screenshot.EncodeToJPG();
         Destroy(screenshot);
 
-        // Save to file (for debugging)
-        string filePath = Path.Combine(Application.persistentDataPath, $"VR_Screenshot_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.png");
+        // Save to file with sequential naming
+        string fileName = $"{photoCounter}.jpg"; // Name the file based on the counter
+        string filePath = Path.Combine(Application.persistentDataPath, fileName);
         File.WriteAllBytes(filePath, imageData);
         Debug.Log($"Screenshot saved: {filePath}");
+
+        // Increment the counter for the next photo
+        photoCounter++;
 
         // Upload to Supabase
         StartCoroutine(UploadFileToSupabase(filePath, imageData));
@@ -66,12 +69,12 @@ public class Cam : MonoBehaviour
     private IEnumerator UploadFileToSupabase(string filePath, byte[] fileData)
     {
         string fileName = Path.GetFileName(filePath);
-        string uploadUrl = $"{supabaseUrl}/storage/v1/object/{bucketName}/{UploadFolder}/{fileName}";
+        string uploadUrl = $"{supabaseUrl}/storage/v1/object/{bucketName}/photos/fake uid/{fileName}";
 
         Debug.Log($"Uploading to URL: {uploadUrl}");
 
         WWWForm form = new WWWForm();
-        form.AddBinaryData("file", fileData, fileName, "image/png");
+        form.AddBinaryData("file", fileData, fileName, "image/jpeg");
 
         using (UnityWebRequest request = UnityWebRequest.Post(uploadUrl, form))
         {
