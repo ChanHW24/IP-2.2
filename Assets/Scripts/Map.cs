@@ -1,3 +1,8 @@
+/*
+ * Author: Chan Hong Wei, Tan Tock Beng, Caspar, Ain
+ * Date: 06/02/2025
+ * Description: Manages the map assembly, collection, display, and teleportation mechanics. 
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,22 +12,25 @@ using UnityEngine.InputSystem;
 
 public class Map : MonoBehaviour
 {
-    public GameObject[] mapPieces; // Assign the map pieces in the Inspector
-    public GameObject newMapPrefab; // Assign the collectible map prefab
-    public Transform spawnPoint; // Assign the spawn location for the new map
-    public UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor[] sockets; // Assign the four sockets
+    /// <summary>
+    /// map pieces and spawn point
+    /// </summary>
+    public GameObject[] mapPieces; 
+    public GameObject newMapPrefab;
+    public Transform spawnPoint; 
+    public UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor[] sockets; 
 
     [Header("Input Actions")]
-    public InputActionReference collectMapAction; // Assigned in Inspector (Primary Button)
-    public InputActionReference displayMapAction; // Assigned in Inspector (Secondary Button)
+    public InputActionReference collectMapAction;
+    public InputActionReference displayMapAction;
 
     [Header("Map Settings")]
-    public GameObject collectedMapPrefab; // Assign the map prefab to spawn on the left hand
-    public Transform leftControllerAttachPoint; // Attach point on left controller
+    public GameObject collectedMapPrefab; 
+    public Transform leftControllerAttachPoint;
 
     [Header("Teleportation")]
-    public Transform[] teleportPoints; // Assign 4 teleport points in Inspector
-    public GameObject playerRig; // Assign XR Rig or Player GameObject
+    public Transform[] teleportPoints; 
+    public GameObject playerRig; 
     
     private bool[] mapPiecesPlaced; // Track whether each map piece is placed
     private bool hasCollectedMap = false;
@@ -66,6 +74,9 @@ public class Map : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles map piece placement in the correct socket.
+    /// </summary>
     void OnMapPiecePlaced(int index, UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable interactable)
     {
         if (interactable != null && interactable.transform.gameObject == mapPieces[index])
@@ -76,7 +87,7 @@ public class Map : MonoBehaviour
         else
         {
             Debug.Log($"Incorrect piece placed in socket {index + 1}, resetting.");
-            sockets[index].interactionManager.SelectExit(sockets[index], interactable); // Force ejection
+            sockets[index].interactionManager.SelectExit(sockets[index], interactable); 
         }
 
         if (AllMapPiecesPlaced())
@@ -86,6 +97,9 @@ public class Map : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks if all map pieces are placed correctly.
+    /// </summary>
     bool AllMapPiecesPlaced()
     {
         foreach (bool placed in mapPiecesPlaced)
@@ -95,11 +109,17 @@ public class Map : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Spawns the completed map at the designated location.
+    /// </summary>
     void SpawnNewMap()
     {
         instantiatedMap = Instantiate(newMapPrefab, spawnPoint.position, spawnPoint.rotation);
     }
     
+    /// <summary>
+    /// Collects the completed map and removes it from the scene.
+    /// </summary>
     void CollectMap(InputAction.CallbackContext context)
     {
         if (!hasCollectedMap && instantiatedMap != null)
@@ -110,6 +130,9 @@ public class Map : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Displays the collected map on the player's left hand.
+    /// </summary>
     void DisplayMap(InputAction.CallbackContext context)
     {
         if (hasCollectedMap)
@@ -133,6 +156,9 @@ public class Map : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Removes all old map pieces and sockets from the scene.
+    /// </summary>
     void RemoveOldPieces()
     {
         foreach (GameObject piece in mapPieces)
@@ -155,6 +181,9 @@ public class Map : MonoBehaviour
         Debug.Log("Map pieces and sockets have been despawned.");
     }
     
+    /// <summary>
+    /// Teleports the player to a specified location.
+    /// </summary>
     public void TeleportTo(int index)
     {
         if (index >= 0 && index < teleportPoints.Length && playerRig != null)

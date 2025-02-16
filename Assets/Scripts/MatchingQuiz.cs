@@ -1,3 +1,8 @@
+/*
+ * Author: Chan Hong Wei, Tan Tock Beng, Caspar, Ain
+ * Date: 07/02/2025
+ * Description: manages the socket for the quiz. checks if the player answered the question correctly.
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,6 +39,10 @@ public class MatchingQuiz : MonoBehaviour
     private Vector3 orchidStartPos, roseStartPos, jasmineStartPos;
     private Quaternion orchidStartRot, roseStartRot, jasmineStartRot;
 
+    /// <summary>
+    /// Initializes the quiz by saving flower positions, setting up UI, 
+    /// and adding event listeners for socket interactions.
+    /// </summary>
     private void Start()
     {
         // Save initial positions & rotations
@@ -47,9 +56,7 @@ public class MatchingQuiz : MonoBehaviour
         jasmineStartRot = jasmineFlower.transform.rotation;
 
         // Initialize UI
-        /*instructionsText.text = "Place the correct flower onto their respective names.";*/
         instructionsText.gameObject.SetActive(true);
-        
         panel.SetActive(true);
         panel1.SetActive(true);
         panel2.SetActive(true);
@@ -60,6 +67,11 @@ public class MatchingQuiz : MonoBehaviour
         jasmineSocket.selectEntered.AddListener(CheckFlowers);
     }
 
+    /// <summary>
+    /// Checks if the flowers placed in the sockets are correct.
+    /// If correct, the success routine starts; otherwise, the failure routine runs.
+    /// </summary>
+    /// <param name="args">Interaction event arguments.</param>
     private void CheckFlowers(SelectEnterEventArgs args)
     {
         // Get the objects placed in each socket
@@ -78,6 +90,9 @@ public class MatchingQuiz : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Retrieves the first object placed in a given socket.
+    /// </summary>
     private GameObject GetPlacedObject(XRSocketInteractor socket)
     {
         if (socket.interactablesSelected.Count > 0)
@@ -87,6 +102,10 @@ public class MatchingQuiz : MonoBehaviour
         return null;
     }
 
+    /// <summary>
+    /// Handles the success scenario where the correct flowers are placed.
+    /// Displays success message, removes objects, and spawns the national flower.
+    /// </summary>
     private IEnumerator HandleSuccess()
     {
         instructionsText.gameObject.SetActive(false);
@@ -105,6 +124,10 @@ public class MatchingQuiz : MonoBehaviour
         Instantiate(nationalFlowerPrefab, spawnPoint.position, spawnPoint.rotation);
     }
     
+    /// <summary>
+    /// Handles the failure scenario where incorrect flowers are placed.
+    /// Displays failure message, resets flowers, and restores UI elements.
+    /// </summary>
     private IEnumerator HandleFailure()
     {
         instructionsText.gameObject.SetActive(false);
@@ -119,6 +142,9 @@ public class MatchingQuiz : MonoBehaviour
         incorrectText.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Destroys all placed flowers and their respective sockets.
+    /// </summary>
     private void DestroyFlowersAndSockets()
     {
         Destroy(GetPlacedObject(orchidSocket));
@@ -130,6 +156,9 @@ public class MatchingQuiz : MonoBehaviour
         Destroy(jasmineSocket.gameObject);
     }
 
+    /// <summary>
+    /// Resets all flowers to their original positions and rotations.
+    /// </summary>
     private void ResetFlowers()
     {
         ResetFlower(orchidSocket, orchidFlower, orchidStartPos, orchidStartRot);
@@ -137,6 +166,10 @@ public class MatchingQuiz : MonoBehaviour
         ResetFlower(jasmineSocket, jasmineFlower, jasmineStartPos, jasmineStartRot);
     }
 
+    /// <summary>
+    /// Resets a specific flower to its original position and rotation.
+    /// If the flower is placed in a socket, it is forcibly removed first.
+    /// </summary>
     private void ResetFlower(XRSocketInteractor socket, GameObject flower, Vector3 startPos, Quaternion startRot)
     {
         if (socket.interactablesSelected.Count > 0)
