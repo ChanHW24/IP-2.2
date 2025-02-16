@@ -135,6 +135,7 @@ public class FirebaseManager : MonoBehaviour
                 // Update UI
                 uIManager.usernameText.text = "User: " + username;
                 uIManager.backButton.gameObject.SetActive(false);
+                SpawnTicket();
             }
         });
     }
