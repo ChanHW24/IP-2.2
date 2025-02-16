@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class GalleryDisplay : MonoBehaviour
 {
-    public string userId; // User ID from FirebaseManager
     public int imageIndex; // Unique index for each quad (set in the Inspector)
 
     private bool hasTriggered = false; // To ensure the coroutine runs only once
@@ -27,6 +26,8 @@ public class GalleryDisplay : MonoBehaviour
 
     public IEnumerator LoadImage()
     {
+        string userId = FirebaseManager.UserId; // Get the user ID from firebase.
+
         // Construct the image URL based on the user ID and image index
         string imageUrl = GetImageUrl(userId, imageIndex);
 
@@ -54,6 +55,6 @@ public class GalleryDisplay : MonoBehaviour
     public string GetImageUrl(string userId, int imageIndex)
     {
         // Construct the URL for the image based on the user ID and image index
-        return $"https://uvklscosbezqzsowuxlb.supabase.co/storage/v1/object/public/images/photos/7Dm4DJ1JAUdIgO9oGFhmdfWWE4W2/{imageIndex}.jpg";
+        return $"https://uvklscosbezqzsowuxlb.supabase.co/storage/v1/object/public/images/photos/{userId}/{imageIndex}.jpg";
     }
 }

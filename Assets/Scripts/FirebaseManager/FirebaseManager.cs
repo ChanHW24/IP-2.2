@@ -248,7 +248,7 @@ public class FirebaseManager : MonoBehaviour
 
                 // Update UI with username and high score
                 uIManager.usernameText.text = "User: " + Username;
-                uIManager.hiscoreText.text = "Fastest Time: " + Mathf.FloorToInt(highscore);
+                uIManager.hiscoreText.text = "Fastest Time: " + highscore.ToString("F2");
             }
             else
             {
@@ -423,6 +423,7 @@ public class FirebaseManager : MonoBehaviour
         }
 
         uIManager.leaderboardText.text = displayText.ToString();
+        uIManager.leaderboardText2.text = displayText.ToString();
     }
 
     // Triggered when the leaderboard button is clicked

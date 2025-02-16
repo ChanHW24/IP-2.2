@@ -26,6 +26,7 @@ public class UIManager : MonoBehaviour
     public GameObject backButton;
     public Button menuButton;
     public TextMeshProUGUI leaderboardText;
+    public TextMeshProUGUI leaderboardText2;
 
     private void Start()
     {
