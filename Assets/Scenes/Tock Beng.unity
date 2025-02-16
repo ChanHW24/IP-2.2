@@ -1173,7 +1173,7 @@ MonoBehaviour:
   instructionsText: {fileID: 1557593714}
   correctText: {fileID: 1425347024}
   incorrectText: {fileID: 1419555717}
-  nationalFlowerPrefab: {fileID: 8051334436110789335, guid: bbfaaf80ac49bb24caafc6ff624e5269, type: 3}
+  nationalFlowerPrefab: {fileID: 8026109572473470435, guid: 89d5ec251ea76e34f916be34a2bddea2, type: 3}
   spawnPoint: {fileID: 656337667}
   panel: {fileID: 880379132}
   panel1: {fileID: 698689935}
@@ -14391,7 +14391,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Congratulations! You placed all flowers correctly.
+  m_text: Congratulations! You placed all notes correctly.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -17973,6 +17973,7 @@ MonoBehaviour:
   backButton: {fileID: 1286200489}
   menuButton: {fileID: 1801570534}
   leaderboardText: {fileID: 1231990865}
+  leaderboardText2: {fileID: 0}
 --- !u!1 &1124292254
 GameObject:
   m_ObjectHideFlags: 0
@@ -22081,7 +22082,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Congratulations! You placed all flowers correctly.
+  m_text: Congratulations! You placed all objects correctly.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -24119,7 +24120,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Place the correct note onto their respective production period.
+  m_text: Place the correct gifts onto their respective festive season.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
