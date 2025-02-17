@@ -32,6 +32,9 @@ public class FlowerQuiz : MonoBehaviour
     // Variables to store initial positions and rotations of flowers
     private Vector3 orchidStartPos, roseStartPos, jasmineStartPos;
     private Quaternion orchidStartRot, roseStartRot, jasmineStartRot;
+    
+    public AudioSource correctAudio;
+    public AudioSource incorrectAudio;
 
     /// <summary>
     /// Initializes the game by storing flower positions, setting up UI, 
@@ -100,6 +103,7 @@ public class FlowerQuiz : MonoBehaviour
         instructionsText.gameObject.SetActive(false);
         correctText.gameObject.SetActive(true);
         incorrectText.gameObject.SetActive(false);
+        correctAudio.Play();
         yield return new WaitForSeconds(2f); // Wait for a moment
 
         // Remove flowers & sockets
@@ -118,6 +122,7 @@ public class FlowerQuiz : MonoBehaviour
         instructionsText.gameObject.SetActive(false);
         correctText.gameObject.SetActive(false);
         incorrectText.gameObject.SetActive(true);
+        incorrectAudio.Play();
         yield return new WaitForSeconds(2f); // Wait for a moment
 
         // Reset flowers to their original positions
