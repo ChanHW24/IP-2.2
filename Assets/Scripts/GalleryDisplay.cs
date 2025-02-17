@@ -1,3 +1,8 @@
+/*
+ * Author: Chan Hong Wei, Tan Tock Beng, Caspar, Ain
+ * Date: 17/02/2025
+ * Description: Show a bunch of images at the end of the game that the player took.
+ */
 using System.Collections;
 using UnityEngine;
 

@@ -1,3 +1,8 @@
+/*
+ * Author: Chan Hong Wei, Tan Tock Beng, Caspar, Ain
+ * Date: 17/02/2025
+ * Description: Handles the script for the game.
+ */
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
